@@ -21,8 +21,7 @@ public class WalletController {
     }
 
     @GetMapping("/user/{userId}")
-    public WalletResponse getWallet(@PathVariable UUID userId
-    ) {
+    public WalletResponse getWallet(@PathVariable UUID userId) {
         return walletService.getWallet(userId);
     }
 }

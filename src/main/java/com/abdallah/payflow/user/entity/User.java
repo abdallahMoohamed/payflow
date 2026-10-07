@@ -1,6 +1,6 @@
 package com.abdallah.payflow.user.entity;
 
-import com.abdallah.payflow.user.role.UserRole;
+import com.abdallah.payflow.user.constant.UserRole;
 import jakarta.persistence.*;
 
 
@@ -72,7 +72,7 @@ public class User {
     public UserRole getRole() {
         return role;
     }
-    
+
     public UUID getId() {
         return id;
     }

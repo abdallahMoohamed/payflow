@@ -1,6 +1,9 @@
 package com.abdallah.payflow.common.exception;
 
 
+import com.abdallah.payflow.transaction.exception.DuplicateTransactionException;
+import com.abdallah.payflow.transaction.exception.InsufficientBalanceException;
+import com.abdallah.payflow.transaction.exception.InvalidTransferException;
 import com.abdallah.payflow.user.exception.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,45 @@ import java.time.ZonedDateTime;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
+
+    @ExceptionHandler(InvalidTransferException.class)
+    public ResponseEntity<Object> handleInvalidTransfer(InvalidTransferException ex) {
+        // 1. Create payload containing exception details
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                ex.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        // 2. Return response entity
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<Object> handleInsufficientBalance(InsufficientBalanceException ex) {
+        // 1. Create payload containing exception details
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                ex.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        // 2. Return response entity
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(DuplicateTransactionException.class)
+    public ResponseEntity<Object> handleDuplicateTransaction(DuplicateTransactionException ex) {
+        // 1. Create payload containing exception details
+        HttpStatus conflict = HttpStatus.CONFLICT;
+        ApiException apiException = new ApiException(
+                ex.getMessage(),
+                conflict,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        // 2. Return response entity
+        return new ResponseEntity<>(apiException, conflict);
+    }
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<Object> handleEmailExists(EmailAlreadyExistsException ex) {
@@ -37,6 +79,19 @@ public class ApiExceptionHandler {
         );
         // 2. Return response entity
         return new ResponseEntity<>(apiException, conflict);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
+        // 1. Create payload containing exception details
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                ex.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        // 2. Return response entity
+        return new ResponseEntity<>(apiException, badRequest);
     }
 
     @ExceptionHandler(Exception.class)

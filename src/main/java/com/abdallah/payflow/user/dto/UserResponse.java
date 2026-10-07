@@ -1,6 +1,6 @@
 package com.abdallah.payflow.user.dto;
 
-import com.abdallah.payflow.user.role.UserRole;
+import com.abdallah.payflow.user.constant.UserRole;
 
 import java.util.UUID;
 
