@@ -11,9 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(
         name = "users",
-        indexes = {
-                @Index(name = "idx_users_email", columnList = "email")
-        }
+        indexes = {@Index(name = "idx_users_email", columnList = "email")}
 )
 public class User {
     @Id
@@ -38,6 +36,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private UserRole role = UserRole.USER;
+
+    @Column(nullable = false)
+    private boolean emailVerified = false;
 
     @PrePersist
     protected void onCreate() {
@@ -68,7 +69,15 @@ public class User {
         this.password = password;
     }
 
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
     // Getters
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
     public UserRole getRole() {
         return role;
     }

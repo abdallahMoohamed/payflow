@@ -1,4 +1,4 @@
-package com.abdallah.payflow.user.dto;
+package com.abdallah.payflow.auth.dto;
 
 public record LoginResponse(
         String accessToken,

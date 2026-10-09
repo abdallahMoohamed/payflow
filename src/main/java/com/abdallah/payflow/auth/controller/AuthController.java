@@ -1,8 +1,10 @@
 package com.abdallah.payflow.auth.controller;
 
+import com.abdallah.payflow.auth.dto.VerifyEmailRequest;
+import com.abdallah.payflow.auth.dto.VerifyEmailResponse;
 import com.abdallah.payflow.auth.service.AuthService;
-import com.abdallah.payflow.user.dto.LoginRequest;
-import com.abdallah.payflow.user.dto.LoginResponse;
+import com.abdallah.payflow.auth.dto.LoginRequest;
+import com.abdallah.payflow.auth.dto.LoginResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,5 +24,10 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @PostMapping("/verify-email")
+    public VerifyEmailResponse verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
+        return authService.verifyEmail(request);
     }
 }

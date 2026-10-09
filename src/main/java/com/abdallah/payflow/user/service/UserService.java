@@ -1,17 +1,16 @@
 package com.abdallah.payflow.user.service;
 
 import com.abdallah.payflow.common.exception.NotFoundException;
+import com.abdallah.payflow.messaging.kafka.event.VerificationEmailEvent;
+import com.abdallah.payflow.messaging.kafka.producer.KafkaProducer;
+import com.abdallah.payflow.redis.service.OtpService;
 import com.abdallah.payflow.user.dto.CreateUserRequest;
 import com.abdallah.payflow.user.dto.UserResponse;
 import com.abdallah.payflow.user.entity.User;
 import com.abdallah.payflow.user.exception.EmailAlreadyExistsException;
 import com.abdallah.payflow.user.factory.UserFactory;
 import com.abdallah.payflow.user.repository.UserRepository;
-import com.abdallah.payflow.wallet.entity.Wallet;
-import com.abdallah.payflow.wallet.factory.WalletFactory;
-import com.abdallah.payflow.wallet.repository.WalletRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -19,40 +18,41 @@ import java.util.UUID;
 public class UserService {
     // Dependency injection
     private final UserRepository userRepository;
-    private final WalletRepository walletRepository;
     private final UserFactory userFactory;
-    private final WalletFactory walletFactory;
+    private final OtpService otpService;
+    private final KafkaProducer kafkaProducer;
 
     public UserService(
             UserRepository userRepository,
-            WalletRepository walletRepository,
             UserFactory userFactory,
-            WalletFactory walletFactory
+            OtpService otpService,
+            KafkaProducer kafkaProducer
+
     ) {
         this.userRepository = userRepository;
-        this.walletRepository = walletRepository;
         this.userFactory = userFactory;
-        this.walletFactory = walletFactory;
+        this.otpService = otpService;
+        this.kafkaProducer = kafkaProducer;
     }
 
 
     // Create user and wallet in a single transaction
-    @Transactional
     public UserResponse createUser(CreateUserRequest userDto) {
-        // 1. Check email existence
+        // Check email existence
         if (userRepository.existsByEmail(userDto.email())) {
             throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        // 2. Create user
+        // Create user
         User user = userFactory.create(userDto);
         User savedUser = userRepository.save(user);
+        // Generate otp
+        String otp = otpService.generateOtp(savedUser.getEmail());
+        // Publish Kafka event
+        VerificationEmailEvent event = new VerificationEmailEvent(savedUser.getEmail(), otp);
+        kafkaProducer.sendVerificationEmail(event);
 
-        // 3. Create wallet for the user
-        Wallet wallet = walletFactory.create(savedUser);
-        walletRepository.save(wallet);
-
-        // 4. Return user response
+        //Return user response
         return toResponse(savedUser);
     }
 
