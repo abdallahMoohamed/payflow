@@ -1,4 +1,4 @@
-package com.abdallah.payflow.auth.security;
+package com.abdallah.payflow.security;
 
 
 import com.abdallah.payflow.common.exception.UnauthorizedException;
@@ -22,8 +22,8 @@ public class AuthenticatedUserService {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new UnauthorizedException("User is not authenticated");
         }
-        return userRepository
-                .findByEmail(authentication.getName())
-                .orElseThrow(() -> new UnauthorizedException("User not found"));
+        return userRepository.findByEmail(authentication.getName()).orElseThrow(() ->
+                new UnauthorizedException("User not found")
+        );
     }
 }

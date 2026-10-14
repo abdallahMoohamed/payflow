@@ -23,11 +23,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleUnauthorized(FailedSendException ex) {
         // 1. Create payload containing exception details
         HttpStatus unauthorized = HttpStatus.UNAUTHORIZED;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                unauthorized,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), unauthorized);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, unauthorized);
     }
@@ -36,11 +32,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleFailedSend(FailedSendException ex) {
         // 1. Create payload containing exception details
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), badRequest);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, badRequest);
     }
@@ -49,11 +41,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex) {
         // 1. Create payload containing exception details
         HttpStatus unauthorized = HttpStatus.UNAUTHORIZED;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                unauthorized,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), unauthorized);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, unauthorized);
     }
@@ -62,11 +50,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleRateLimitExceeded(RateLimitExceededException ex) {
         // 1. Create payload containing exception details
         HttpStatus tooManyRequests = HttpStatus.TOO_MANY_REQUESTS;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                tooManyRequests,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), tooManyRequests);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, tooManyRequests);
     }
@@ -75,11 +59,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleInvalidTransfer(InvalidTransferException ex) {
         // 1. Create payload containing exception details
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), badRequest);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, badRequest);
     }
@@ -88,11 +68,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleInsufficientBalance(InsufficientBalanceException ex) {
         // 1. Create payload containing exception details
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), badRequest);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, badRequest);
     }
@@ -101,11 +77,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleDuplicateTransaction(DuplicateTransactionException ex) {
         // 1. Create payload containing exception details
         HttpStatus conflict = HttpStatus.CONFLICT;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                conflict,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), conflict);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, conflict);
     }
@@ -114,11 +86,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleEmailExists(EmailAlreadyExistsException ex) {
         // 1. Create payload containing exception details
         HttpStatus conflict = HttpStatus.CONFLICT;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                conflict,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), conflict);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, conflict);
     }
@@ -127,11 +95,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleWalletNotFound(NotFoundException ex) {
         // 1. Create payload containing exception details
         HttpStatus conflict = HttpStatus.NOT_FOUND;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                conflict,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), conflict);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, conflict);
     }
@@ -140,11 +104,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException ex) {
         // 1. Create payload containing exception details
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ApiException apiException = new ApiException(
-                ex.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException(ex.getMessage(), badRequest);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, badRequest);
     }
@@ -154,11 +114,7 @@ public class ApiExceptionHandler {
         System.out.println("exception: " + ex);
         // 1. Create payload containing exception details
         HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiException apiException = new ApiException(
-                "An unexpected error occurred",
-                internalServerError,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
+        ApiException apiException = new ApiException("An unexpected error occurred", internalServerError);
         // 2. Return response entity
         return new ResponseEntity<>(apiException, internalServerError);
     }

@@ -3,7 +3,8 @@ package com.abdallah.payflow.auth.service;
 
 import com.abdallah.payflow.auth.dto.VerifyEmailRequest;
 import com.abdallah.payflow.auth.dto.VerifyEmailResponse;
-import com.abdallah.payflow.auth.security.JwtService;
+import com.abdallah.payflow.security.CustomUserDetails;
+import com.abdallah.payflow.security.JwtService;
 import com.abdallah.payflow.common.exception.NotFoundException;
 import com.abdallah.payflow.redis.service.OtpService;
 import com.abdallah.payflow.redis.service.RateLimitService;
@@ -60,18 +61,15 @@ public class AuthService {
                     new UsernamePasswordAuthenticationToken(request.email(), request.password())
             );
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            String token = jwtService.generateToken(userDetails);
+            String token = jwtService.generateToken(customUserDetails);
 
-            return new LoginResponse(
-                    token,
-                    "Bearer"
-            );
+            return new LoginResponse(token, "Bearer");
 
         } catch (BadCredentialsException e) {
             rateLimitService.checkLoginRateLimit(request.email());
-            throw e;
+            throw new BadCredentialsException("Invalid email or password", e);
         }
 
     }

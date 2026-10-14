@@ -1,4 +1,4 @@
-package com.abdallah.payflow.auth.security;
+package com.abdallah.payflow.security;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;

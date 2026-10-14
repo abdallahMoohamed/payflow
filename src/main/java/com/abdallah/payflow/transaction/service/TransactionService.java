@@ -1,6 +1,6 @@
 package com.abdallah.payflow.transaction.service;
 
-import com.abdallah.payflow.auth.security.AuthenticatedUserService;
+import com.abdallah.payflow.security.AuthenticatedUserService;
 import com.abdallah.payflow.common.exception.NotFoundException;
 import com.abdallah.payflow.transaction.constant.TransactionStatus;
 import com.abdallah.payflow.transaction.dto.DepositRequest;
