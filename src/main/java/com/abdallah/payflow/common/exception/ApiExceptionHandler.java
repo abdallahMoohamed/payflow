@@ -8,16 +8,31 @@ import com.abdallah.payflow.transaction.exception.InsufficientBalanceException;
 import com.abdallah.payflow.transaction.exception.InvalidTransferException;
 import com.abdallah.payflow.user.exception.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidation(MethodArgumentNotValidException ex) {
+        // 1. Extract errors from DTOs validation
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        // 2. Create payload containing exception details
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(message, badRequest);
+        // 3. Return response entity
+        return new ResponseEntity<>(apiException, badRequest);
+    }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Object> handleUnauthorized(FailedSendException ex) {
